@@ -36,25 +36,19 @@ public class RegisterActivity extends AppCompatActivity {
                 pass = et_pass.getText().toString();
 
                 User user = new User(email, pass);
-                user.checkEmail(user.getEmail());
-                user.checkPass(user.getPassword());
 
                 if (!checkEmail(email).equals("OK")){
                     Toast.makeText(getBaseContext(), checkEmail(email), Toast.LENGTH_SHORT).show();
-                }
+                } else
                 if (!checkPass(pass).equals("OK")) {
                     Toast.makeText(getBaseContext(), checkPass(pass), Toast.LENGTH_LONG).show();
-                }
-
-//                if (!User.existUser(email)){
-//                    Toast.makeText(getBaseContext(), "Email já cadastrado!", Toast.LENGTH_LONG).show();
-//                } else {
+                } else {
                     user.save();
 
                     Intent it = new Intent(getBaseContext(), MainActivity.class);
                     startActivity(it);
-//                }
-
+                    finish();
+                }
 
 
             }

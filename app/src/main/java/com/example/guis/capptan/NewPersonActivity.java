@@ -18,6 +18,7 @@ public class NewPersonActivity extends AppCompatActivity {
     EditText et_personCpf;
     Button bt_cadastrar;
     Long id = 0L;
+    Long userId;
     String name;
     int age;
     String cpf;
@@ -34,6 +35,11 @@ public class NewPersonActivity extends AppCompatActivity {
             Log.d("CHECK ID", id.toString());
         }
 
+        if (intent.getLongExtra("userId",0L)!=0L){
+            userId = intent.getLongExtra("userId",0L);
+            Log.d("CHECK USERID", userId.toString());
+        }
+
         et_personName = (EditText) findViewById(R.id.et_personName);
         et_personAge = (EditText)findViewById(R.id.et_personAge);
         et_personCpf = (EditText)findViewById(R.id.et_personCpf);
@@ -46,14 +52,14 @@ public class NewPersonActivity extends AppCompatActivity {
                     name = et_personName.getText().toString();
                     age = Integer.parseInt(et_personAge.getText().toString());
                     cpf = et_personCpf.getText().toString();
-                    Person pEdit = new Person(id,name,age,cpf);
+                    Person pEdit = new Person(id,name,age,cpf,userId);
                     pEdit.update();
 
                 } else {
                     name = et_personName.getText().toString();
                     age = Integer.parseInt(et_personAge.getText().toString());
                     cpf = et_personCpf.getText().toString();
-                    Person person = new Person(name,age,cpf);
+                    Person person = new Person(name,age,cpf,userId);
                     person.save();
                 }
 
@@ -65,13 +71,14 @@ public class NewPersonActivity extends AppCompatActivity {
             }
         });
 
-        if (id > 0) {
-            Person person = Person.findById(Person.class, id);
-            Log.d("CHECK PERSON", person.getName()+" "+String.valueOf(person.getAge())+""+person.getCpf());
-            et_personName.setText(person.getName());
-            et_personAge.setText(String.valueOf(person.getAge()));
-            et_personCpf.setText(person.getCpf());
-        }
+            if (id > 0) {
+                Person person = Person.findById(Person.class, id);
+                Log.d("CHECK PERSON", person.getName()+" "+String.valueOf(person.getAge())+""+person.getCpf());
+                et_personName.setText(person.getName());
+                et_personAge.setText(String.valueOf(person.getAge()));
+                et_personCpf.setText(person.getCpf());
+            }
+
 
     }
 }

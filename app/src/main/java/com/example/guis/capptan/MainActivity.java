@@ -49,11 +49,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 List<User> uAuth;
                 uAuth = User.find(User.class,"email = ? and password = ?",email,pass);
 
-//                Log.d("TESTTTTT",uAuth.get(0).getEmail());
-//                uAuth.get(0) != null ||
                 if (uAuth.size() > 0){
                     Log.d("CHECK AUTH", "OK");
                     it = new Intent(this, PersonsActivity.class);
+                    it.putExtra("userId",uAuth.get(0).getId());
                     startActivity(it);
                     finish();
                 } else {
@@ -61,16 +60,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             .setAction("Action", null).show();
                 }
 
-//                if (true){
-//                    Log.d("CHECK", "LOGIN TEST");
-//                }
-
                 break;
             case R.id.bt_register:
                 Log.d("ACTION", "bt_register");
                 it = new Intent(this, RegisterActivity.class);
                 startActivity(it);
-                finish();
                 break;
         }
     }

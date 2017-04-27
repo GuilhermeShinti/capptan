@@ -7,16 +7,21 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
 import com.example.guis.capptan.Adapter.PersonAdapter;
 import com.example.guis.capptan.Model.Person;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PersonsActivity extends AppCompatActivity {
 
     static ListView personList;
     static PersonAdapter pAdapter;
+    static Long userId = 0L;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +29,13 @@ public class PersonsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_persons);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Intent intent = getIntent();
+
+        if (intent.getLongExtra("userId",0L)!=0L){
+            userId = intent.getLongExtra("userId",0L);
+            Log.d("CHECK USERID", userId.toString());
+        }
 
 //        Person.populate();
 
@@ -38,6 +50,7 @@ public class PersonsActivity extends AppCompatActivity {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
                 Intent it = new Intent(getBaseContext(), NewPersonActivity.class);
+                it.putExtra("userId", userId);
                 startActivity(it);
             }
         });
@@ -46,7 +59,10 @@ public class PersonsActivity extends AppCompatActivity {
         fab_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Person.deleteAll(Person.class);
+//                Person.deleteAll(Person.class);
+                Person.deleteAll(Person.class, "user_id = ?", userId.toString());
+                pAdapter.clear();
+                pAdapter.notifyDataSetChanged();
                 Snackbar.make(view, "Registro limpo com sucesso!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 PersonsActivity.refreshList(getApplicationContext());
@@ -55,8 +71,15 @@ public class PersonsActivity extends AppCompatActivity {
     }
 
     public static void refreshList(Context context) {
-        pAdapter = new PersonAdapter(context, Person.getAll());
+        Log.d("ACTION", "LIST REFRESH");
+        Log.d("CHECK", "USERID->"+userId);
+        if (Person.getAllById(userId).size() > 0){
+            pAdapter = new PersonAdapter(context, Person.getAllById(userId));
+        }
         personList.setAdapter(pAdapter);
+//        pAdapter = new PersonAdapter(context, Person.getAll());
+//        personList.setAdapter(pAdapter);
+
     }
 
 }

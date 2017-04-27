@@ -17,20 +17,23 @@ public class Person extends SugarRecord{
     String name;
     int age;
     String cpf;
+    Long userId;
 
     public Person(){}
 
-    public Person(String name, int age, String cpf) {
+    public Person(String name, int age, String cpf, Long userId) {
         this.name = name;
         this.age = age;
         this.cpf = cpf;
+        this.userId = userId;
     }
 
-    public Person(Long id, String name, int age, String cpf) {
+    public Person(Long id, String name, int age, String cpf, Long userId) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.cpf = cpf;
+        this.userId = userId;
     }
 
 //    public static void populate() {
@@ -53,6 +56,17 @@ public class Person extends SugarRecord{
 
     public String getCpf() {
         return cpf;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public static List<Person> getAllById(Long userId)  {
+        List<Person> listaDeUsers = new ArrayList<Person>();
+//        listaDeUsers = Person.listAll(Person.class);
+        listaDeUsers = Person.find(Person.class, "user_id = ?", userId.toString());
+        return listaDeUsers;
     }
 
     public static List<Person> getAll()  {

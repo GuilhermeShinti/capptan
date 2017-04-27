@@ -2,6 +2,7 @@ package com.example.guis.capptan.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,10 @@ public class PersonAdapter extends ArrayAdapter<Person> {
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         Person person = getItem(position);
         final Long id = person.getId();
+        Log.d("CHECK", "PERSON ID: "+person.getId());
+        Log.d("CHECK", "PERSON NAME: "+person.getName());
+        Log.d("CHECK", "PERSON CPF: "+person.getCpf());
+        Log.d("CHECK", "PERSON USERID: "+person.getUserId());
 
 //        ViewHolder holder = null;
 //        if (convertView == null){
@@ -52,9 +57,6 @@ public class PersonAdapter extends ArrayAdapter<Person> {
                     Person p = Person.findById(Person.class, id);
                     Intent it = new Intent(getContext(), NewPersonActivity.class);
                     it.putExtra("id",p.getId());
-//                    it.putExtra("PersonAge",p.getAge());
-//                    it.putExtra("PersonCpf",p.getCpf());
-//                    it.putExtra("PersonName",p.getName());
                     it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getContext().startActivity(it);
                     clear();
